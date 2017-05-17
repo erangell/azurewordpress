@@ -18,9 +18,9 @@
  * @package WordPress
  */
 
+/** enable SSL to Azure MySQL */
 define('MYSQL_SSL_CA', '/etc/ssl/certs/Baltimore_CyberTrust_Root.pem');
 
-// ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define('DB_NAME', getenv('WORDPRESS_DB_NAME'));
 
@@ -90,16 +90,6 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
 if (isset($_SERVER['HTTP_X_ARR_SSL'])) {
 	$_SERVER['HTTPS'] = 'on';
 }
-
-
-if($_SERVER['HTTPS'] != 'on' && empty($_SERVER['HTTP_X_ARR_SSL'])){
-    $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-    header('HTTP/1.1 301 Moved Permanently');
-    header('Location: ' . $redirect);
-    exit();
-}
-
-
 
 /* That's all, stop editing! Happy blogging. */
 
