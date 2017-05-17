@@ -1,4 +1,4 @@
-# WordPress using Azure MySQL and Azure App Services for Linux
+## WordPress using Azure MySQL and Azure App Services for Linux
 * Based on Ubuntu, Apache and WordPress 4.7.5
 * Uses this git repo to pull and update WordPress files
 * SSL support with self-signed certificates (ignore the browser warning)
