@@ -52,4 +52,38 @@ WordPress files are located in /var/www/html
 You should see the "famous WordPress 5 minute start" which will create a basic WordPress site automatically.
 
 ## Congratulations!
-At this point, you should have a functioning WordPress installation
+At this point, you should have a functioning WordPress site
+
+## Building a custom container
+The Docker directory contains everything necessary to customize the container  
+
+* Update the files in docker/apache2/ssl with your certificate files
+* Update the git clone in Dockerfile to pull from your repository
+*    Note that the repo assumes an html directory and pulls to /var/www
+* Some of the installed packages are for convenience and can be removed
+
+## WordPress code changes
+* wp-config uses the environment variables for MySQL connection information
+* wp-config defines MYSQL_SSL_CA to support SSL to Azure MySQL
+```
+define('MYSQL_SSL_CA', '/etc/ssl/certs/Baltimore_CyberTrust_Root.pem');
+```
+*wp-config adds support for x-arr-ssl headers (used by App Services for Linux)
+```
+if (isset($_SERVER['HTTP_X_ARR_SSL'])) {
+	$_SERVER['HTTPS'] = 'on';
+}
+```
+* .htaccess redirects to SSL (including x-arr-ssl support)
+```
+RewriteEngine On
+RewriteCond %{HTTP:X-ARR-SSL} ^$
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+```
+* wp-includes/wp-db.php is patched to support SSL to Azure MySQL
+```
+if ( defined('MYSQL_SSL_CA')) {
+        mysqli_ssl_set($this->dbh,NULL,NULL,MYSQL_SSL_CA,NULL,NULL);
+}
+```
