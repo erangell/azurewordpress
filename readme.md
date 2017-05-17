@@ -62,12 +62,14 @@ At this point, you should have a functioning WordPress site
 The Docker directory contains everything necessary to customize the container  
 
 * Update the files in docker/apache2/ssl with your certificate files
-* Update the git clone in Dockerfile to pull from your repository
+* Update the git clone in Dockerfile to pull from your repository  
      Note that the repo assumes an html directory and pulls to /var/www
 * Some of the installed packages are for convenience and can be removed
+* The Dockerfile is not optimized for size
 
 ## WordPress code changes
-* wp-config uses the environment variables for MySQL connection information
+* wp-config uses the environment variables for MySQL connection information  
+    This is great for testing but actual values should probably be used for production
 * wp-config defines MYSQL_SSL_CA to support SSL to Azure MySQL
 ```
 define('MYSQL_SSL_CA', '/etc/ssl/certs/Baltimore_CyberTrust_Root.pem');
