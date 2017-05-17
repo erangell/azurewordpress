@@ -53,7 +53,8 @@ bartr/wp
 ```
 If you want to explore the container, you can override the command with bash  
 /usr/local/wprun.sh is the script that starts WordPress  
-WordPress files are located in /var/www/html
+WordPress files are located in /var/www/html  
+You must run the git command from wprun.sh to pull the WordPress files as they are not in the container  
 
 ## Browse to your web endpoint
 You should see the "famous WordPress 5 minute install" which will create a basic WordPress site automatically.
@@ -73,13 +74,8 @@ Most customizations can be accomplished by using environment variables, but just
 * The Dockerfile is not optimized for size
 
 ## WordPress code changes
+* wp-config is not included in the standard WordPress distribution, so you can copy the file as-is
 * wp-config uses the environment variables for MySQL connection information  
-    This is great for testing but actual values should probably be used for production
-* wp-config defines MYSQL_SSL_CA to support SSL to Azure MySQL
-```
-define('MYSQL_SSL_CA', '/etc/ssl/certs/Baltimore_CyberTrust_Root.pem');
-```
-
 * wp-config adds support for x-arr-ssl headers (used by App Services for Linux)
 ```
 if (isset($_SERVER['HTTP_X_ARR_SSL'])) {
@@ -87,7 +83,8 @@ if (isset($_SERVER['HTTP_X_ARR_SSL'])) {
 }
 ```
 
-* wp-config forces SSL (including x-arr-ssl support)
+* wp-config forces SSL (including x-arr-ssl support)  
+    Remove this code if you want to support http and https
 ```
 if($_SERVER['HTTPS'] != 'on' && empty($_SERVER['HTTP_X_ARR_SSL'])){
     $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -97,7 +94,13 @@ if($_SERVER['HTTPS'] != 'on' && empty($_SERVER['HTTP_X_ARR_SSL'])){
 }
 ```
 
-* wp-includes/wp-db.php is patched to support SSL to Azure MySQL
+* wp-config defines MYSQL_SSL_CA to support SSL to Azure MySQL
+```
+define('MYSQL_SSL_CA', '/etc/ssl/certs/Baltimore_CyberTrust_Root.pem');
+```
+
+* wp-includes/wp-db.php is patched to support SSL to Azure MySQL  
+    Make sure to patch the file if you use a separate repo as this file is part of the WordPress distribution
 ```
 if ( defined('MYSQL_SSL_CA')) {
         mysqli_ssl_set($this->dbh,NULL,NULL,MYSQL_SSL_CA,NULL,NULL);
