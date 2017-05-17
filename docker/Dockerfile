@@ -3,7 +3,7 @@ MAINTAINER bartr
 EXPOSE 80
 EXPOSE 443
 
-RUN apt-get update -y && apt-get install -y apt-utils nano git curl wget apache2 php libapache2-mod-php php-mcrypt php-mysql 
+RUN apt-get update -y && apt-get install -y apt-utils nano git curl wget apache2 php libapache2-mod-php php-mcrypt php-mysql openssh
 RUN mkdir -p /var/lock/apache2 && mkdir -p /var/log/apache2 && mkdir -p /var/run/apache2
 
 COPY apache2 /etc
