@@ -12,7 +12,7 @@
 * Replace westus1-a with your region
 * Replace myserver with your server name
 * Replace adminuser with your admin user name
-* Replace Azure2017 with your WordPress password
+* Replace WP-Passw0rd with your WordPress password  
      Don't forget to update create.sql
 * Optionally replace wordpress database and/or user with your choice
 
@@ -33,7 +33,7 @@ mysql -h myserver.mysql.database.azure.com -u adminuser@myserver -p < create.sql
 ```
 WORDPRESS_DB_HOST=westus1-a.control.database.windows.net
 WORDPRESS_DB_USER=wordpress@myserver
-WORDPRESS_DB_PASSWORD=Azure2017
+WORDPRESS_DB_PASSWORD=WP-Passw0rd
 WORDPRESS_DB_NAME=wordpress
 ```
 
@@ -44,7 +44,7 @@ Note that WordPress embeds the FQDN into links, so you cannot reuse the database
 docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e WORDPRESS_DB_HOST=westus1-a.control.database.windows.net \
 -e WORDPRESS_DB_USER=wordpress@myserver \
--e WORDPRESS_DB_PASSWORD=Azure2017 \
+-e WORDPRESS_DB_PASSWORD=WP-Passw0rd \
 -e WORDPRESS_DB_NAME=wordpress \
 bartr/wp
 ```
