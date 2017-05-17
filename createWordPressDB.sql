@@ -1,4 +1,4 @@
-drop database if exists wordpress;
+/* drop database if exists wordpress; */
 
 create database wordpress;
 
