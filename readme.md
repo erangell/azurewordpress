@@ -14,7 +14,8 @@
 * Replace adminuser with your admin user name
 * Replace WP-Passw0rd with your WordPress password  
      Don't forget to update create.sql
-* Optionally replace wordpress database and/or user with your choice
+* (optional) Replace wordpress database and/or user with your choice
+* (optional) Replace GIT_REPO with your URL
 
 ## Installation
 * Create an Azure MySQL database from the portal, CLI or PowerShell
@@ -34,6 +35,8 @@ WORDPRESS_DB_HOST=westus1-a.control.database.windows.net
 WORDPRESS_DB_USER=wordpress@myserver
 WORDPRESS_DB_PASSWORD=WP-Passw0rd
 WORDPRESS_DB_NAME=wordpress
+
+(optional) GIT_REPO=https://github.com/bartr/azurewordpress.git
 ```
 
 ## Running from Docker
@@ -45,6 +48,7 @@ docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e WORDPRESS_DB_USER=wordpress@myserver \
 -e WORDPRESS_DB_PASSWORD=WP-Passw0rd \
 -e WORDPRESS_DB_NAME=wordpress \
+-e GIT_REPO=https://github.com/bartr/azurewordpress.git \
 bartr/wp
 ```
 If you want to explore the container, you can override the command with bash  
@@ -59,9 +63,11 @@ At this point, you should have a functioning WordPress site
 
 ## Building a custom container
 The Docker directory contains everything necessary to customize the container  
+Most customizations can be accomplished by using environment variables, but just in case  
 
-* Update the files in docker/apache2/ssl with your certificate files
-* Update the git clone in Dockerfile to pull from your repository  
+* Update the files in docker/apache2/ssl with your certificate files  
+    Note: This is not necessary if deploying in App Services for Linux as ASL provides SSL termination
+* Update the GIT_REPO environment variable to pull from your repository  
      Note that the repo assumes an html directory and pulls to /var/www
 * Some of the installed packages are for convenience and can be removed
 * The Dockerfile is not optimized for size
@@ -73,19 +79,24 @@ The Docker directory contains everything necessary to customize the container
 ```
 define('MYSQL_SSL_CA', '/etc/ssl/certs/Baltimore_CyberTrust_Root.pem');
 ```
+
 * wp-config adds support for x-arr-ssl headers (used by App Services for Linux)
 ```
 if (isset($_SERVER['HTTP_X_ARR_SSL'])) {
 	$_SERVER['HTTPS'] = 'on';
 }
 ```
-* .htaccess redirects to SSL (including x-arr-ssl support)
+
+* wp-config forces SSL (including x-arr-ssl support)
 ```
-RewriteEngine On
-RewriteCond %{HTTP:X-ARR-SSL} ^$
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+if($_SERVER['HTTPS'] != 'on' && empty($_SERVER['HTTP_X_ARR_SSL'])){
+    $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    header('HTTP/1.1 301 Moved Permanently');
+    header('Location: ' . $redirect);
+    exit();
+}
 ```
+
 * wp-includes/wp-db.php is patched to support SSL to Azure MySQL
 ```
 if ( defined('MYSQL_SSL_CA')) {
