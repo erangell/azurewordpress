@@ -1,15 +1,19 @@
 # WordPress using Azure MySQL and Azure App Services for Linux
 * Based on Ubuntu, Apache and WordPress 4.7.5
-* Calls git pull on start
+* Uses this git repo to pull and update WordPress files
 * SSL support with self-signed certificates (ignore the browser warning)
 * SSL support for connecting to Azure MySQL
 * Web tier runs on Azure App Services for Linux or any Docker container
+* Includes Dockerfile for building custom images
+     For convenience, the Docker and SQL directories are in a single repo  
+     This presents a security risk, so remove the directories from you production repo
 
 ## Replacements
 * Replace westus1-a with your region
 * Replace myserver with your server name
 * Replace adminuser with your admin user name
 * Replace Azure2017 with your WordPress password
+     Don't forget to update create.sql
 * Optionally replace wordpress database and/or user with your choice
 
 ## Installation
@@ -49,7 +53,7 @@ If you want to explore the container, you can override the command with bash
 WordPress files are located in /var/www/html
 
 ## Browse to your web endpoint
-You should see the "famous WordPress 5 minute start" which will create a basic WordPress site automatically.
+You should see the "famous WordPress 5 minute install" which will create a basic WordPress site automatically.
 
 ## Congratulations!
 At this point, you should have a functioning WordPress site
