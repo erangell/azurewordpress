@@ -22,7 +22,7 @@ ENV APACHE_RUN_USER=www-data
 ENV APACHE_RUN_GROUP=www-data
 
 RUN rm -R /var/www/html && chown -R www-data:www-data /var/www && chmod -R 775 /var/www
-RUN git clone https://guest:780afc9b7f37ac4882d96f68047c8ac3c6a64da3@github.com/bartr/azurewordpress.git /var/www
+RUN git clone https://github.com/bartr/azurewordpress.git /var/www
 
 RUN a2enmod rewrite && a2enmod ssl && a2ensite default-ssl.conf
 
