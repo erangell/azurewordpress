@@ -87,6 +87,7 @@ if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROT
 	$_SERVER['HTTPS'] = 'on';
 }
 
+/** Enable x-arr-ssl header support for App Services for Linux */
 if (isset($_SERVER['HTTP_X_ARR_SSL'])) {
 	$_SERVER['HTTPS'] = 'on';
 }

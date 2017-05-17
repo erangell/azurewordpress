@@ -1534,6 +1534,7 @@ class wpdb {
 				}
 			}
 
+/** patch - enable SSL support for Azure MySQL */
 if ( defined('MYSQL_SSL_CA')) {
         mysqli_ssl_set($this->dbh,NULL,NULL,MYSQL_SSL_CA,NULL,NULL);
 }
