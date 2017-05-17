@@ -4,7 +4,7 @@
 * SSL support with self-signed certificates (ignore the browser warning)
 * SSL support for connecting to Azure MySQL
 * Web tier runs on Azure App Services for Linux or any Docker container
-* Includes Dockerfile for building custom images
+* Includes Dockerfile for building custom images  
      For convenience, the Docker and SQL directories are in a single repo  
      This presents a security risk, so remove the directories from you production repo
 
