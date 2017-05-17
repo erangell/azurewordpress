@@ -92,6 +92,15 @@ if (isset($_SERVER['HTTP_X_ARR_SSL'])) {
 	$_SERVER['HTTPS'] = 'on';
 }
 
+/** Force redirect to SSL */
+if($_SERVER['HTTPS'] != 'on' && empty($_SERVER['HTTP_X_ARR_SSL'])){
+    $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    header('HTTP/1.1 301 Moved Permanently');
+    header('Location: ' . $redirect);
+    exit();
+}
+
+
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
