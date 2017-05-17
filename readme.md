@@ -15,8 +15,10 @@
 ## Installation
 * Create an Azure MySQL database from the portal, CLI or PowerShell
 * Open the MySQL firewall from the portal, CLI or PowerShell
+* (optional) edit create.sql to update database, user and/or password
 * Use Azure Cloud Shell to create the database and user and grant permissions
-```mysql -h myserver.mysql.database.azure.com -u adminuser@myserver -p < create.sql
+```
+mysql -h myserver.mysql.database.azure.com -u adminuser@myserver -p < create.sql
    (Note that create.sql will delete the wordpress database if it exists!)
 ```
 
