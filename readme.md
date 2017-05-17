@@ -55,6 +55,9 @@ If you want to explore the container, you can override the command with bash
 /usr/local/wprun.sh is the script that starts WordPress  
 WordPress files are located in /var/www/html  
 You must run the git command from wprun.sh to pull the WordPress files as they are not in the container  
+```
+git clone "$GIT_REPO" /var/www
+```
 
 ## Browse to your web endpoint
 You should see the "famous WordPress 5 minute install" which will create a basic WordPress site automatically.
