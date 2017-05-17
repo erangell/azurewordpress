@@ -5,7 +5,7 @@
 * SSL support for connecting to Azure MySQL
 * Web tier runs on Azure App Services for Linux or any Docker container
 * Includes Dockerfile for building custom images  
-     For convenience, the Docker and SQL directories are in a single repo  
+     For convenience, the Docker and SQL files are in a single repo  
      This presents a security risk, so remove the directories from you production repo
 
 ## Replacements
@@ -23,7 +23,6 @@
 * Use Azure Cloud Shell to create the database and user and grant permissions
 ```
 mysql -h myserver.mysql.database.azure.com -u adminuser@myserver -p < create.sql
-   (Note that create.sql will delete the wordpress database if it exists!)
 ```
 
 ## Running from App Services for Linux
