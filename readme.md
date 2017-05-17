@@ -22,8 +22,20 @@ mysql -h myserver.mysql.database.azure.com -u adminuser@myserver -p < create.sql
    (Note that create.sql will delete the wordpress database if it exists!)
 ```
 
+## Running from App Services for Linux
+* Create an App Service for Linux instance from the portal, CLI or Powershell
+* Set the docker container to bartr/wp
+* Set the following parameters in the settings tab
+```
+WORDPRESS_DB_HOST=westus1-a.control.database.windows.net
+WORDPRESS_DB_USER=wordpress@myserver
+WORDPRESS_DB_PASSWORD=Azure2017
+WORDPRESS_DB_NAME=wordpress
+```
+
 ## Running from Docker
-Make sure ports 80 and 443 are open on your Docker host and no other services are using the ports
+Make sure ports 80 and 443 are open on your Docker host and no other services are using the ports  
+Note that WordPress embeds the FQDN into links, so you cannot reuse the database
 ```
 docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e WORDPRESS_DB_HOST=westus1-a.control.database.windows.net \
@@ -36,15 +48,8 @@ If you want to explore the container, you can override the command with bash
 /usr/local/wprun.sh is the script that starts WordPress  
 WordPress files are located in /var/www/html
 
+## Browse to your web endpoint
+You should see the "famous WordPress 5 minute start" which will create a basic WordPress site automatically.
 
-## Running from App Services for Linux
-* Create an App Service for Linux instance from the portal, CLI or Powershell
-* Set the docker container to bartr/wp
-* Set the following parameters in the settings tab
-```
-WORDPRESS_DB_HOST=westus1-a.control.database.windows.net
-WORDPRESS_DB_USER=wordpress@myserver
-WORDPRESS_DB_PASSWORD=Azure2017
-WORDPRESS_DB_NAME=wordpress
-```
-
+## Congratulations!
+At this point, you should have a functioning WordPress installation
