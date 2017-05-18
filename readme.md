@@ -62,6 +62,14 @@ docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e GIT_REPO=https://github.com/bartr/azurewordpress.git \
 bartr/wp
 ```
+
+## Browse to your web endpoint
+You should see the "famous WordPress 5 minute install" which will create a basic WordPress site automatically.
+
+## Congratulations!
+At this point, you should have a functioning WordPress site
+
+## Exploring the container contents
 If you want to explore the container, you can override the command with bash  
 ```
 docker run -it -p 80:80 -p 443:443 --name wordpress \
@@ -72,7 +80,6 @@ docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e GIT_REPO=https://github.com/bartr/azurewordpress.git \
 bartr/wp bash
 
-
 You must run the git command to pull the WordPress files as they are not in the container  
 
 git clone "$GIT_REPO" /var/www
@@ -81,12 +88,6 @@ WordPress files are located in /var/www/html
 
 /usr/local/wprun.sh is the script that starts WordPress  
 ```
-
-## Browse to your web endpoint
-You should see the "famous WordPress 5 minute install" which will create a basic WordPress site automatically.
-
-## Congratulations!
-At this point, you should have a functioning WordPress site
 
 ## Building a custom container
 The Docker directory contains everything necessary to customize the container  
