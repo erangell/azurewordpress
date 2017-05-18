@@ -13,17 +13,26 @@
 * Replace myserver with your server name
 * Replace adminuser with your admin user name
 * Replace WP-Passw0rd with your WordPress password  
-     Don't forget to update createWordPressDB.sql
+     Don't forget to update the MySQL commands
 * (optional) Replace wordpress database and/or user with your choice
 * (optional) Replace GIT_REPO with your URL
 
 ## Installation
 * Create an Azure MySQL database from the portal, CLI or PowerShell
 * Open the MySQL firewall from the portal, CLI or PowerShell
-* (optional) edit createWordPressDB.sql to update database, user and/or password
+* (optional) update database, user and/or password in MySQL commands
 * Use Azure Cloud Shell to create the database and user and grant permissions
 ```
-mysql -h myserver.mysql.database.azure.com -u adminuser@myserver -p < createWordPressDB.sql
+mysql -h myserver.mysql.database.azure.com -u adminuser@myserver -p
+
+/* MySQL Commands */
+
+/* drop database if exists wordpress; */
+
+create database wordpress;
+GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress' IDENTIFIED BY 'WP-Passw0rd';
+FLUSH PRIVILEGES;
+
 ```
 
 ## Running from App Services for Linux
