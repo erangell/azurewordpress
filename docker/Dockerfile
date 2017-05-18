@@ -20,11 +20,13 @@ ENV APACHE_RUN_DIR=/var/run/apache2
 ENV APACHE_PID_FILE=/var/run/apache2/apache2.pid
 ENV APACHE_RUN_USER=www-data
 ENV APACHE_RUN_GROUP=www-data
+
 ENV GIT_REPO=https://github.com/bartr/azurewordpress.git
+ENV WORDPRESS_DB_HOST=westus1-a.control.database.windows.net
+ENV WORDPRESS_DB_NAME=wordpress
 
 RUN rm -R /var/www/html && chown -R www-data:www-data /var/www && chmod -R 775 /var/www
 
 RUN a2enmod rewrite && a2enmod ssl && a2ensite default-ssl.conf
-
 
 CMD ["bash", "wprun.sh"]
