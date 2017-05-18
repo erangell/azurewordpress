@@ -74,6 +74,7 @@ bartr/wp bash
 
 
 You must run the git command to pull the WordPress files as they are not in the container  
+
 git clone "$GIT_REPO" /var/www
 
 WordPress files are located in /var/www/html  
