@@ -63,11 +63,21 @@ docker run -it -p 80:80 -p 443:443 --name wordpress \
 bartr/wp
 ```
 If you want to explore the container, you can override the command with bash  
+```
+docker run -it -p 80:80 -p 443:443 --name wordpress \
+-e WORDPRESS_DB_USER=wordpress@myserver \
+-e WORDPRESS_DB_PASSWORD=WP-Passw0rd \
+-e WORDPRESS_DB_HOST=westus1-a.control.database.windows.net \
+-e WORDPRESS_DB_NAME=wordpress \
+-e GIT_REPO=https://github.com/bartr/azurewordpress.git \
+bartr/wp bash
+
+
+You must run the git command to pull the WordPress files as they are not in the container  
+git clone "$GIT_REPO" /var/www
+
 /usr/local/wprun.sh is the script that starts WordPress  
 WordPress files are located in /var/www/html  
-You must run the git command from wprun.sh to pull the WordPress files as they are not in the container  
-```
-git clone "$GIT_REPO" /var/www
 ```
 
 ## Browse to your web endpoint
