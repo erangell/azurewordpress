@@ -48,6 +48,8 @@ WORDPRESS_DB_HOST=westus1-a.control.database.windows.net
 WORDPRESS_DB_NAME=wordpress
 GIT_REPO=https://github.com/bartr/azurewordpress.git
 FORCE_SSL=true
+SSL_CRT='Your SSL Cert'
+SSL_KEY='Your SSL Key'
 ```
 
 ## Running from Docker
@@ -71,6 +73,8 @@ docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e WORDPRESS_DB_NAME=wordpress \
 -e GIT_REPO=https://github.com/bartr/azurewordpress.git \
 -e FORCE_SSL=true \
+-e SSL_CRT='Your SSL Cert' \
+-e SSL_KEY='Your SSL Key' \
 bartr/wp
 ```
 
