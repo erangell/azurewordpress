@@ -1,7 +1,7 @@
-# save the SSL CRT if specified
-if [[ $SSL_CRT ]];
+# save the SSL PEM if specified
+if [[ $SSL_PEM ]];
 then
-  echo -e "$SSL_CRT" > /etc/ssl/certs/apache.crt;
+  echo -e "$SSL_PEM" > /etc/ssl/certs/apache.pem;
 fi
 
 # save the SSL Key if specified
