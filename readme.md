@@ -2,6 +2,8 @@
 * Based on Ubuntu, Apache and WordPress 4.7.5
 * Uses this git repo to pull and update WordPress files
 * SSL support with self-signed certificates (ignore the browser warning)
+* SSL is configured to use apache.pem and apache.key
+* By default, the snake oil keys are copied to apache.pem and apache.key
 * SSL support for connecting to Azure MySQL
 * Web tier runs on Azure App Services for Linux or any Docker container
 * Includes Dockerfile for building custom images  
@@ -48,7 +50,7 @@ WORDPRESS_DB_HOST=westus1-a.control.database.windows.net
 WORDPRESS_DB_NAME=wordpress
 GIT_REPO=https://github.com/bartr/azurewordpress.git
 FORCE_SSL=true
-SSL_CRT='Your SSL Cert'
+SSL_PEM='Your SSL Cert'
 SSL_KEY='Your SSL Key'
 ```
 
@@ -73,7 +75,7 @@ docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e WORDPRESS_DB_NAME=wordpress \
 -e GIT_REPO=https://github.com/bartr/azurewordpress.git \
 -e FORCE_SSL=true \
--e SSL_CRT='Your SSL Cert' \
+-e SSL_PEM='Your SSL Cert' \
 -e SSL_KEY='Your SSL Key' \
 bartr/wp
 ```
