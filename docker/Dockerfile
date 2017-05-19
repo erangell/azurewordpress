@@ -26,7 +26,7 @@ ENV WORDPRESS_DB_HOST=westus1-a.control.database.windows.net
 ENV WORDPRESS_DB_NAME=wordpress
 ENV FORCE_SSL=true
 
-RUN cp /etc/ssl/certs/ssl-cert-snakeoil.pem /etc/ssl/certs/apache.pem && cp /etc/ssl/private/ssl-cert-snakeoil.key  /etc/ssl/private/apache.key
+RUN cp /etc/ssl/certs/ssl-cert-snakeoil.pem /etc/ssl/certs/apache.crt && cp /etc/ssl/private/ssl-cert-snakeoil.key  /etc/ssl/private/apache.key
 
 RUN rm -R /var/www/html && chown -R www-data:www-data /var/www && chmod -R 775 /var/www
 
