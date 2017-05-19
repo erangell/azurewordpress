@@ -24,6 +24,7 @@ ENV APACHE_RUN_GROUP=www-data
 ENV GIT_REPO=https://github.com/bartr/azurewordpress.git
 ENV WORDPRESS_DB_HOST=westus1-a.control.database.windows.net
 ENV WORDPRESS_DB_NAME=wordpress
+ENV FORCE_SSL=true
 
 RUN rm -R /var/www/html && chown -R www-data:www-data /var/www && chmod -R 775 /var/www
 

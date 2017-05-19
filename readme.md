@@ -5,8 +5,8 @@
 * SSL support for connecting to Azure MySQL
 * Web tier runs on Azure App Services for Linux or any Docker container
 * Includes Dockerfile for building custom images  
-     For convenience, the Docker and SQL files are in a single repo  
-     This presents a security risk, so remove the directories from you production repo
+     For convenience, the Docker and readme are in a single repo  
+     This presents a security risk, so remove the directory and readme from you production repo
 
 ## Replacements
 * Replace westus1-a with your region
@@ -47,6 +47,7 @@ Optional with default values:
 WORDPRESS_DB_HOST=westus1-a.control.database.windows.net
 WORDPRESS_DB_NAME=wordpress
 GIT_REPO=https://github.com/bartr/azurewordpress.git
+FORCE_SSL=true
 ```
 
 ## Running from Docker
@@ -69,6 +70,7 @@ docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e WORDPRESS_DB_HOST=westus1-a.control.database.windows.net \
 -e WORDPRESS_DB_NAME=wordpress \
 -e GIT_REPO=https://github.com/bartr/azurewordpress.git \
+-e FORCE_SSL=true \
 bartr/wp
 ```
 
@@ -87,6 +89,7 @@ docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e WORDPRESS_DB_HOST=westus1-a.control.database.windows.net \
 -e WORDPRESS_DB_NAME=wordpress \
 -e GIT_REPO=https://github.com/bartr/azurewordpress.git \
+-e FORCE_SSL=true \
 bartr/wp bash
 
 You must run the git command to pull the WordPress files as they are not in the container  
@@ -120,9 +123,9 @@ if (isset($_SERVER['HTTP_X_ARR_SSL'])) {
 ```
 
 * wp-config forces SSL (including x-arr-ssl support)  
-    Remove this code if you want to support http and https
+    Change the FORCE_SSL environment variable to false if you want to allow http traffic
 ```
-if($_SERVER['HTTPS'] != 'on' && empty($_SERVER['HTTP_X_ARR_SSL'])){
+if(strtolower(getenv('FORCE_SSL')) == 'true' && $_SERVER['HTTPS'] != 'on' && empty($_SERVER['HTTP_X_ARR_SSL'])){
     $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
     header('HTTP/1.1 301 Moved Permanently');
     header('Location: ' . $redirect);
