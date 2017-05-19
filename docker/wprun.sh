@@ -1,13 +1,13 @@
 # save the SSL CRT if specified
 if [[ $SSL_CRT ]];
 then
-  echo "$SSL_CRT" > /etc/ssl/apache.crt;
+  echo "$SSL_CRT" > /etc/ssl/certs/apache.pem;
 fi
 
 # save the SSL Key if specified
 if [[ $SSL_KEY ]];
  then
-  echo "$SSL_KEY" > /etc/ssl/apache.key;
+  echo "$SSL_KEY" > /etc/ssl/private/apache.key;
 fi
 
 # git the latest code

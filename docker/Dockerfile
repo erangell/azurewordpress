@@ -6,7 +6,7 @@ EXPOSE 443
 RUN mkdir -p /var/lock/apache2 && mkdir -p /var/log/apache2 && mkdir -p /var/run/apache2
 RUN apt-get update -y && apt-get install -y apt-utils nano git curl wget apache2 php libapache2-mod-php php-mcrypt php-mysql
 
-COPY apache2 /etc
+COPY default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
 
 WORKDIR "/usr/local"
 COPY wprun.sh /usr/local
@@ -25,6 +25,8 @@ ENV GIT_REPO=https://github.com/bartr/azurewordpress.git
 ENV WORDPRESS_DB_HOST=westus1-a.control.database.windows.net
 ENV WORDPRESS_DB_NAME=wordpress
 ENV FORCE_SSL=true
+
+RUN cp /etc/ssl/certs/ssl-cert-snakeoil.pem /etc/ssl/certs/apache.pem && cp /etc/ssl/private/ssl-cert-snakeoil.key  /etc/ssl/private/apache.key
 
 RUN rm -R /var/www/html && chown -R www-data:www-data /var/www && chmod -R 775 /var/www
 
