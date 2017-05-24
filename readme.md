@@ -9,8 +9,6 @@
 * Uses git repo to pull and update WordPress source files    
     https://github.com/bartr/wordpressfiles/
 * SSL support with self-signed certificates (ignore the browser warning)
-* SSL is configured to use apache.pem and apache.key    
-    By default, the snake oil keys are copied to apache.pem and apache.key    
     Replace keys with your SSL values via environment variables
 * SSL support for connecting to Azure MySQL
 * Web tier runs on Azure App Services for Linux or any Docker container
