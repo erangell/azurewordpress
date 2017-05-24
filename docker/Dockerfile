@@ -6,8 +6,6 @@ EXPOSE 443
 RUN mkdir -p /var/lock/apache2 && mkdir -p /var/log/apache2 && mkdir -p /var/run/apache2
 RUN apt-get update -y && apt-get install -y apt-utils nano git curl wget apache2 php libapache2-mod-php php-mcrypt php-mysql
 
-COPY default-ssl.conf /etc/apache2/sites-available/default-ssl.conf
-
 WORKDIR "/usr/local"
 COPY wprun.sh /usr/local
 RUN chmod +x wprun.sh
@@ -28,8 +26,8 @@ ENV FORCE_SSL=true
 
 RUN cp /etc/ssl/certs/ssl-cert-snakeoil.pem /etc/ssl/certs/apache.pem && cp /etc/ssl/private/ssl-cert-snakeoil.key  /etc/ssl/private/apache.key
 
-RUN rm -R /var/www/html && chown -R www-data:www-data /var/www && chmod -R 775 /var/www
+RUN rm -R /var/www/html && a2enmod rewrite && a2enmod ssl && a2ensite default-ssl.conf
 
-RUN a2enmod rewrite && a2enmod ssl && a2ensite default-ssl.conf
+RUN sed -i "s@/var/www@/home/www@" /etc/apache2/sites-enabled/default-ssl.conf && sed -i "s@/var/www@/home/www@" /etc/apache2/sites-enabled/000-default.conf && sed -i "s@/var/www@/home/www@" /etc/apache2/apache2.conf
 
 CMD ["bash", "wprun.sh"]

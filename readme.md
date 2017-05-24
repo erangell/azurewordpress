@@ -1,17 +1,17 @@
 # Breaking Change
-The location for pulling the WordPress files has been changed to [here](https://github.com/bartr/wordpressfiles/)    
-Please git the latest version and rebuild your container image   
-This change is included in the referenced images
+* The location for pulling the WordPress files has been changed to [here](https://github.com/bartr/wordpressfiles/)    
+* Please git the latest version and rebuild your container image   
+* This change is included in the bartr/wp image
 
 
 ## WordPress using Azure MySQL and Azure App Services for Linux
-* Based on Ubuntu, Apache and WordPress 4.7.5
-* Uses git repo to pull and update WordPress files    
+* Based on Ubuntu 16.04, Apache2 and WordPress 4.7.5
+* Uses git repo to pull and update WordPress source files    
     https://github.com/bartr/wordpressfiles/
 * SSL support with self-signed certificates (ignore the browser warning)
 * SSL is configured to use apache.pem and apache.key    
     By default, the snake oil keys are copied to apache.pem and apache.key    
-    Replace keys with your SSL values
+    Replace keys with your SSL values via environment variables
 * SSL support for connecting to Azure MySQL
 * Web tier runs on Azure App Services for Linux or any Docker container
 * Includes Dockerfile for building custom images  
@@ -36,11 +36,11 @@ mysql -h myserver.mysql.database.azure.com -u adminuser@myserver -p
 /* MySQL Commands */
 
 /* drop database if exists wordpress; */
+create user 'wordpress' IDENTIFIED BY "WP-Passw0rd";
 
 create database wordpress;
-GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress' IDENTIFIED BY 'WP-Passw0rd';
+GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress';
 FLUSH PRIVILEGES;
-
 ```
 
 ## Running from App Services for Linux
@@ -54,11 +54,17 @@ WORDPRESS_DB_PASSWORD=WP-Passw0rd
 Optional with default values:
 WORDPRESS_DB_HOST=westus1-a.control.database.windows.net
 WORDPRESS_DB_NAME=wordpress
-GIT_REPO=https://github.com/bartr/azurewordpress.git
+GIT_REPO=https://github.com/bartr/wordpressfiles.git
 FORCE_SSL=true
 SSL_PEM='Your SSL Cert'
 SSL_KEY='Your SSL Key'
 ```
+
+## Browse to your web endpoint
+You should see the "famous WordPress 5 minute install" which will create a basic WordPress site automatically.
+
+## Congratulations!
+At this point, you should have a functioning WordPress site
 
 ## Running from Docker
 Make sure ports 80 and 443 are open on your Docker host and no other services are using the ports  
@@ -79,18 +85,12 @@ docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e WORDPRESS_DB_PASSWORD=WP-Passw0rd \
 -e WORDPRESS_DB_HOST=westus1-a.control.database.windows.net \
 -e WORDPRESS_DB_NAME=wordpress \
--e GIT_REPO=https://github.com/bartr/azurewordpress.git \
+-e GIT_REPO=https://github.com/bartr/wordpressfiles.git \
 -e FORCE_SSL=true \
 -e SSL_PEM='Your SSL Cert' \
 -e SSL_KEY='Your SSL Key' \
 bartr/wp
 ```
-
-## Browse to your web endpoint
-You should see the "famous WordPress 5 minute install" which will create a basic WordPress site automatically.
-
-## Congratulations!
-At this point, you should have a functioning WordPress site
 
 ## Exploring the container contents
 If you want to explore the container, you can override the command with bash  
@@ -98,30 +98,26 @@ If you want to explore the container, you can override the command with bash
 docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e WORDPRESS_DB_USER=wordpress@myserver \
 -e WORDPRESS_DB_PASSWORD=WP-Passw0rd \
--e WORDPRESS_DB_HOST=westus1-a.control.database.windows.net \
--e WORDPRESS_DB_NAME=wordpress \
--e GIT_REPO=https://github.com/bartr/azurewordpress.git \
--e FORCE_SSL=true \
 bartr/wp bash
 
 You must run the git command to pull the WordPress files as they are not in the container  
 
-git clone "$GIT_REPO" /var/www
+mkdir -p /home/www
+git clone "$GIT_REPO" /home/www
 
-WordPress files are located in /var/www/html  
+WordPress files are located in /home/www/html  
 
-/usr/local/wprun.sh is the script that starts WordPress  
+/usr/local/wprun.sh is the script that starts WordPress    
+
+Git the latest version (after running git clone)
+git -C /home/www pull
 ```
 
 ## Building a custom container
 * The docker directory contains everything necessary to customize the container  
-* The appservices directory contains everything necessary to customize the container for App Services for Linux deployment  
-They are slightly different    
-A container built from the docker directory will run on ASL but is not optimized    
 Most customizations can be accomplished by using environment variables, but just in case  
 
 * Update the GIT_REPO environment variable to pull from your repository  
-     Note that the repo assumes an html directory and pulls to /var/www
+     Note that the repo assumes an html directory and pulls to /home/www
 * Some of the installed packages are for convenience and can be removed
 * The Dockerfile is not optimized for size
-
