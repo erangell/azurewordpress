@@ -1,14 +1,20 @@
+# Breaking Change
+The location for pulling the WordPress files has been changed to [here](https://github.com/bartr/wordpressfiles/)    
+Please git the latest version and rebuild your container image   
+This change is included in the referenced images
+
+
 ## WordPress using Azure MySQL and Azure App Services for Linux
 * Based on Ubuntu, Apache and WordPress 4.7.5
-* Uses this git repo to pull and update WordPress files
+* Uses git repo to pull and update WordPress files    
+    https://github.com/bartr/wordpressfiles/
 * SSL support with self-signed certificates (ignore the browser warning)
-* SSL is configured to use apache.pem and apache.key
-* By default, the snake oil keys are copied to apache.pem and apache.key
+* SSL is configured to use apache.pem and apache.key    
+    By default, the snake oil keys are copied to apache.pem and apache.key    
+    Replace keys with your SSL values
 * SSL support for connecting to Azure MySQL
 * Web tier runs on Azure App Services for Linux or any Docker container
 * Includes Dockerfile for building custom images  
-     For convenience, the Docker and readme are in a single repo  
-     This presents a security risk, so remove the directory and readme from you production repo
 
 ## Replacements
 * Replace westus1-a with your region
@@ -108,46 +114,14 @@ WordPress files are located in /var/www/html
 ```
 
 ## Building a custom container
-The Docker directory contains everything necessary to customize the container  
+* The docker directory contains everything necessary to customize the container  
+* The appservices directory contains everything necessary to customize the container for App Services for Linux deployment  
+They are slightly different    
+A container built from the docker directory will run on ASL but is not optimized    
 Most customizations can be accomplished by using environment variables, but just in case  
 
-* Update the files in docker/apache2/ssl with your certificate files  
-    Note: This is not necessary if deploying in App Services for Linux as ASL provides SSL termination
 * Update the GIT_REPO environment variable to pull from your repository  
      Note that the repo assumes an html directory and pulls to /var/www
 * Some of the installed packages are for convenience and can be removed
 * The Dockerfile is not optimized for size
 
-## WordPress code changes
-* wp-config is not included in the standard WordPress distribution, so you can copy the file as-is
-* wp-config uses the environment variables for MySQL connection information  
-* wp-config adds support for x-arr-ssl headers (used by App Services for Linux)
-```
-if (isset($_SERVER['HTTP_X_ARR_SSL'])) {
-	$_SERVER['HTTPS'] = 'on';
-}
-```
-
-* wp-config forces SSL (including x-arr-ssl support)  
-    Change the FORCE_SSL environment variable to false if you want to allow http traffic
-```
-if(strtolower(getenv('FORCE_SSL')) == 'true' && $_SERVER['HTTPS'] != 'on' && empty($_SERVER['HTTP_X_ARR_SSL'])){
-    $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-    header('HTTP/1.1 301 Moved Permanently');
-    header('Location: ' . $redirect);
-    exit();
-}
-```
-
-* wp-config defines MYSQL_SSL_CA to support SSL to Azure MySQL
-```
-define('MYSQL_SSL_CA', '/etc/ssl/certs/Baltimore_CyberTrust_Root.pem');
-```
-
-* wp-includes/wp-db.php is patched to support SSL to Azure MySQL  
-    Make sure to patch the file if you use a separate repo as this file is part of the WordPress distribution
-```
-if ( defined('MYSQL_SSL_CA')) {
-        mysqli_ssl_set($this->dbh,NULL,NULL,MYSQL_SSL_CA,NULL,NULL);
-}
-```
