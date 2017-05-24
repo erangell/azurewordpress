@@ -34,6 +34,7 @@ mysql -h myserver.mysql.database.azure.com -u adminuser@myserver -p
 /* MySQL Commands */
 
 /* drop database if exists wordpress; */
+
 create user 'wordpress' IDENTIFIED BY "WP-Passw0rd";
 
 create database wordpress;
@@ -53,9 +54,6 @@ Optional with default values:
 WORDPRESS_DB_HOST=westus1-a.control.database.windows.net
 WORDPRESS_DB_NAME=wordpress
 GIT_REPO=https://github.com/bartr/wordpressfiles.git
-FORCE_SSL=true
-SSL_PEM='Your SSL Cert'
-SSL_KEY='Your SSL Key'
 ```
 
 ## Browse to your web endpoint
@@ -99,22 +97,20 @@ docker run -it -p 80:80 -p 443:443 --name wordpress \
 bartr/wp bash
 
 You must run the git command to pull the WordPress files as they are not in the container  
-
 mkdir -p /home/www
 git clone "$GIT_REPO" /home/www
+
+Git the latest version (after running git clone)
+git -C /home/www pull
 
 WordPress files are located in /home/www/html  
 
 /usr/local/wprun.sh is the script that starts WordPress    
-
-Git the latest version (after running git clone)
-git -C /home/www pull
 ```
 
 ## Building a custom container
-* The docker directory contains everything necessary to customize the container  
-Most customizations can be accomplished by using environment variables, but just in case  
-
+* The docker directory contains everything necessary to build the container  
+Most customizations can be accomplished by using environment variables    
 * Update the GIT_REPO environment variable to pull from your repository  
      Note that the repo assumes an html directory and pulls to /home/www
 * Some of the installed packages are for convenience and can be removed
