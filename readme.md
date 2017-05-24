@@ -8,7 +8,7 @@
 * Based on Ubuntu 16.04, Apache2 and WordPress 4.7.5
 * Uses git repo to pull and update WordPress source files    
     https://github.com/bartr/wordpressfiles/
-* SSL support with self-signed certificates (ignore the browser warning)
+* SSL support with self-signed certificates (ignore the browser warning)    
     Replace keys with your SSL values via environment variables
 * SSL support for connecting to Azure MySQL
 * Web tier runs on Azure App Services for Linux or any Docker container
