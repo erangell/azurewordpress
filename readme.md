@@ -1,9 +1,3 @@
-# Breaking Change
-* The location for pulling the WordPress files has been changed to [here](https://github.com/bartr/wordpressfiles/)    
-* Please git the latest version and rebuild your container image   
-* This change is included in the bartr/wp image
-
-
 ## WordPress using Azure MySQL and Azure App Services for Linux
 * Based on Ubuntu 16.04, Apache2 and WordPress 4.7.5
 * Uses git repo to pull and update WordPress source files    
