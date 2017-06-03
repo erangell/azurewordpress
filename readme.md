@@ -78,7 +78,6 @@ docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e WORDPRESS_DB_HOST=westus1-a.control.database.windows.net \
 -e WORDPRESS_DB_NAME=wordpress \
 -e GIT_REPO=https://github.com/bartr/wordpressfiles.git \
--e FORCE_SSL=true \
 -e SSL_PEM='Your SSL Cert' \
 -e SSL_KEY='Your SSL Key' \
 bartr/apache-wordpress
