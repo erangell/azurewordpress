@@ -1,5 +1,7 @@
 ## WordPress using Azure MySQL and Azure App Services for Linux
-* Based on Ubuntu 16.04, Apache2 and WordPress 4.7.5
+* Based on Ubuntu 16.04, Apache2 and WordPress 4.7.5    
+  or    
+  Ubuntu 16.04, NGINX, PHP-FPM and WordPress4.7.5
 * Uses git repo to pull and update WordPress source files    
     https://github.com/bartr/wordpressfiles/
 * SSL support with self-signed certificates (ignore the browser warning)    
@@ -38,7 +40,7 @@ FLUSH PRIVILEGES;
 
 ## Running from App Services for Linux
 * Create an App Service for Linux instance from the portal, CLI or Powershell
-* Set the docker container to bartr/wp
+* Set the docker container to bartr/apache-wordpress or bartr/nginx-wordpress
 * Set the following parameters in the settings tab
 ```
 WORDPRESS_DB_USER=wordpress@myserver
@@ -65,7 +67,7 @@ Short Syntax (using defaults)
 docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e WORDPRESS_DB_USER=wordpress@myserver \
 -e WORDPRESS_DB_PASSWORD=WP-Passw0rd \
-bartr/wp
+bartr/apache-wordpress
 ```
 
 Full Syntax  
@@ -79,7 +81,7 @@ docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e FORCE_SSL=true \
 -e SSL_PEM='Your SSL Cert' \
 -e SSL_KEY='Your SSL Key' \
-bartr/wp
+bartr/apache-wordpress
 ```
 
 ## Exploring the container contents
@@ -88,7 +90,7 @@ If you want to explore the container, you can override the command with bash
 docker run -it -p 80:80 -p 443:443 --name wordpress \
 -e WORDPRESS_DB_USER=wordpress@myserver \
 -e WORDPRESS_DB_PASSWORD=WP-Passw0rd \
-bartr/wp bash
+bartr/apache-wordpress bash
 
 You must run the git command to pull the WordPress files as they are not in the container  
 mkdir -p /home/www
