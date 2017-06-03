@@ -5,7 +5,8 @@ EXPOSE 443
 
 RUN mkdir -p /var/lock/apache2 && mkdir -p /var/log/apache2 && mkdir -p /var/run/apache2 && \
 apt-get update -y && \
-apt-get install -y apt-utils nano git curl wget apache2 php libapache2-mod-php php-mcrypt php-mysql
+apt-get install -y git apache2 php libapache2-mod-php php-mcrypt php-mysql \
+apt-utils nano curl wget mysql-client-core-5.7
 
 ENV APACHE_CONFDIR=/etc/apache2 \
 APACHE_ENVVARS=/etc/apache2/envvars \
@@ -21,7 +22,7 @@ WORDPRESS_DB_NAME=wordpress \
 FORCE_SSL=true
 
 WORKDIR "/usr/local"
-COPY wprun.sh /usr/local
+COPY wprun.sh wp-config.php /usr/local/
 
 RUN chmod +x wprun.sh && \
 cp /etc/ssl/certs/ssl-cert-snakeoil.pem /etc/ssl/certs/apache.pem && \
@@ -33,6 +34,6 @@ a2ensite default-ssl.conf && \
 sed -i "s@/var/www@/home/www@" /etc/apache2/sites-enabled/default-ssl.conf && \
 sed -i "s@/var/www@/home/www@" /etc/apache2/sites-enabled/000-default.conf && \
 sed -i "s@/var/www@/home/www@" /etc/apache2/apache2.conf && \
-echo -e "[client]\necho "ssl=on\necho "ssl-ca=/etc/ssl/certs/Baltimore_CyberTrust_Root.pem" > /etc/my.cnf
+echo -e "[client]\nssl-mode=VERIFY_CA\nssl-ca=/etc/ssl/certs/Baltimore_CyberTrust_Root.pem" > /etc/my.cnf
 
 CMD ["bash", "wprun.sh"]
