@@ -1,5 +1,5 @@
 FROM ubuntu
-MAINTAINER bartr
+MAINTAINER erangell
 EXPOSE 80
 EXPOSE 443
 
@@ -16,8 +16,8 @@ APACHE_RUN_DIR=/var/run/apache2 \
 APACHE_PID_FILE=/var/run/apache2/apache2.pid \
 APACHE_RUN_USER=www-data \
 APACHE_RUN_GROUP=www-data \
-GIT_REPO=https://github.com/bartr/wordpressfiles.git \
-WORDPRESS_DB_HOST=westus1-a.control.database.windows.net \
+GIT_REPO=https://github.com/erangell/wordpressfiles.git \
+WORDPRESS_DB_HOST=eastus1-a.control.database.windows.net \
 WORDPRESS_DB_NAME=wordpress \
 FORCE_SSL=true
 
